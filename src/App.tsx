@@ -1,5 +1,6 @@
 import React from 'react';
 import PersonsList from './features/PersonsList/PersonsList';
+import './App.css';
 
 function App() {
 	return (
