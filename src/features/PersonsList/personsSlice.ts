@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import data from '../../data/generated.json';
 
 export type PersonType = {
@@ -15,8 +16,7 @@ export type PersonType = {
 
 type PersonsState = {
 	items: Record<string, PersonType>;
-	isLoading: boolean;
-	error: string | null;
+	editedPerson: PersonType | null;
 };
 
 const personsById: Record<string, PersonType> = {};
@@ -27,24 +27,32 @@ data.forEach((person) => {
 
 const initialState: PersonsState = {
 	items: personsById,
-	isLoading: false,
-	error: null,
+	editedPerson: null,
 };
 
 const personsSlice = createSlice({
 	name: 'persons',
 	initialState,
 	reducers: {
+		selectPerson: (state, action: PayloadAction<string>) => {
+			state.editedPerson = state.items[action.payload];
+		},
+		cancelPersonEditing: (state) => {
+			state.editedPerson = null;
+		},
 		updatePerson: (state, action: PayloadAction<PersonType>) => {
 			state.items[action.payload.id] = action.payload;
+			state.editedPerson = null;
 		},
 	},
 });
 
-export const { updatePerson } = personsSlice.actions;
+export const { selectPerson, updatePerson, cancelPersonEditing } =
+	personsSlice.actions;
 
-export const fetchPersons = () => {
-	return Object.keys(personsById).map((id) => personsById[id]);
-};
+export const itemsById = (state: RootState) => state.persons.items;
+export const fetchPersons = createSelector([itemsById], (items) => {
+	return Object.keys(items).map((id) => items[id]);
+});
 
 export default personsSlice.reducer;

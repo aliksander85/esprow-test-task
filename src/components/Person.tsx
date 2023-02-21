@@ -1,17 +1,28 @@
 import React from 'react';
-import { PersonType } from '../features/PersonsList/personsSlice';
+import { useAppDispatch } from '../app/hooks';
+import { PersonType, selectPerson } from '../features/PersonsList/personsSlice';
 import ImageLoader from './ImageLoader';
+import IndicatorActive from './IndicatorActive';
 
 type PersonProps = {
 	person: PersonType;
 };
 
 function Person({ person }: PersonProps) {
+	const dispatch = useAppDispatch();
+
+	const handleClickPerson = () => {
+		dispatch(selectPerson(person.id));
+	};
+
 	return (
-		<li className="persons__person person">
+		<li className="persons__person person" onClick={handleClickPerson}>
 			<ImageLoader src={person.picture} alt={person.name} />
 			<div className="person__info">
-				<h3>{person.name}</h3>
+				<h3 className="person__title">
+					<IndicatorActive isActive={person.isActive} />
+					{person.name}
+				</h3>
 				<p>
 					<b>Age: </b>
 					{person.age}

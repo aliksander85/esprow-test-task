@@ -4,7 +4,6 @@ import Person from '../../components/Person';
 import { fetchPersons } from './personsSlice';
 
 function PersonsList() {
-	// const dispatch = useAppDispatch();
 	const items = useAppSelector(fetchPersons);
 
 	return (
