@@ -15,10 +15,19 @@
 	align-items: center;
 	height: 60px;
 }
-.header__input {
+.filter__input-container {
+	position: relative;
+}
+.filter__input {
 	height: 25px;
 }
-.header__button {
+.filter__input-reset {
+	position: absolute;
+	right: 4px;
+	top: 0;
+	cursor: pointer;
+}
+.filter__button {
 	height: 31px;
 	cursor: pointer;
 }

@@ -1,25 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import FilterByName from '../features/FilterByName/FilterByName';
 
 function Header() {
-	const [filterValue, setFilterValue] = useState('');
-
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFilterValue(e.target.value);
-	};
-
-	const handleClick = () => {};
-
 	return (
-		<div className="header__container">
-			<input
-				value={filterValue}
-				onChange={handleChange}
-				className="header__input"
-			/>
-			<button onClick={handleClick} className="header__button">
-				Search
-			</button>
-		</div>
+		<header className="header">
+			<div className="header__container">
+				<FilterByName />
+			</div>
+		</header>
 	);
 }
 

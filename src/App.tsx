@@ -7,10 +7,9 @@ import './App.css';
 function App() {
 	return (
 		<>
-			<header className="header">
-				<Header />
-			</header>
+			<Header />
 			<main className="main">
+				<h1>Persons List</h1>
 				<PersonsList></PersonsList>
 				<EditPerson />
 			</main>
