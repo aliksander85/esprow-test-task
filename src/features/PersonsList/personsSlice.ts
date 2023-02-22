@@ -15,10 +15,16 @@ export type PersonType = {
 	registered: string;
 };
 
+export enum Sorting {
+	ASCENDING = 'ascending',
+	DESCENDING = 'descending',
+}
+
 type PersonsState = {
 	items: Record<string, PersonType>;
 	editedPerson: PersonType | null;
 	filterByName: string;
+	sortedByName: Sorting | null;
 };
 
 const personsById: Record<string, PersonType> = {};
@@ -31,6 +37,7 @@ const initialState: PersonsState = {
 	items: personsById,
 	editedPerson: null,
 	filterByName: '',
+	sortedByName: null,
 };
 
 const personsSlice = createSlice({
@@ -50,6 +57,9 @@ const personsSlice = createSlice({
 		setFilterByName: (state, action: PayloadAction<string>) => {
 			state.filterByName = action.payload;
 		},
+		setSortingByName: (state, action: PayloadAction<Sorting>) => {
+			state.sortedByName = action.payload;
+		},
 	},
 });
 
@@ -58,18 +68,26 @@ export const {
 	updatePerson,
 	cancelPersonEditing,
 	setFilterByName,
+	setSortingByName,
 } = personsSlice.actions;
 
 export const itemsById = (state: RootState) => state.persons.items;
 export const filterByName = (state: RootState) => state.persons.filterByName;
+export const sortByName = (state: RootState) => state.persons.sortedByName;
 export const fetchPersons = createSelector(
-	[itemsById, filterByName],
-	(items, filter) => {
+	[itemsById, filterByName, sortByName],
+	(items, filter, sort) => {
 		return Object.keys(items)
 			.map((id) => items[id])
 			.filter((item) =>
 				item.name.toLowerCase().includes(filter.toLowerCase())
-			);
+			)
+			.sort((a, b) => {
+				if (sort === Sorting.ASCENDING) {
+					return a.name.localeCompare(b.name);
+				}
+				return b.name.localeCompare(a.name);
+			});
 	}
 );
 
