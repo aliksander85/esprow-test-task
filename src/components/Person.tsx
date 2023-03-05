@@ -1,18 +1,19 @@
-import React from 'react';
-import { useAppDispatch } from '../app/hooks';
-import { PersonType, selectPerson } from '../features/PersonsList/personsSlice';
+import React, { memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { selectPerson } from '../features/PersonsList/personsSlice';
 import ImageLoader from './ImageLoader';
 import IndicatorActive from './IndicatorActive';
 
 type PersonProps = {
-	person: PersonType;
+	id: string;
 };
 
-function Person({ person }: PersonProps) {
+const Person = memo(({ id }: PersonProps) => {
 	const dispatch = useAppDispatch();
+	const person = useAppSelector((state) => state.persons.items[id]);
 
 	const handleClickPerson = () => {
-		dispatch(selectPerson(person.id));
+		dispatch(selectPerson(id));
 	};
 
 	return (
@@ -46,6 +47,6 @@ function Person({ person }: PersonProps) {
 			</div>
 		</li>
 	);
-}
+});
 
 export default Person;

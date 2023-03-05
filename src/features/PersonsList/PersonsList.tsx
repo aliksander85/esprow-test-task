@@ -4,13 +4,13 @@ import Person from '../../components/Person';
 import { fetchPersons } from './personsSlice';
 
 function PersonsList() {
-	const items = useAppSelector(fetchPersons);
+	const itemIds = useAppSelector(fetchPersons);
 
 	return (
 		<>
 			<ul className="main__persons persons">
-				{items.map((person) => (
-					<Person person={person} key={person.id}></Person>
+				{itemIds.map((id) => (
+					<Person id={id} key={id} />
 				))}
 			</ul>
 		</>
