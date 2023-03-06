@@ -82,17 +82,28 @@ export const sortByName = (state: RootState) => state.persons.sortedByName;
 export const fetchPersons = createSelector(
 	[itemsById, itemIds, filterByName, sortByName],
 	(items, ids, filter, sort) => {
-		return ids
-			.map((id) => id)
-			.filter((id) =>
+		if (sort === null && filter === '') {
+			return ids;
+		}
+
+		let filteredList = ids;
+
+		if (filter !== '') {
+			filteredList = ids.filter((id) =>
 				items[id].name.toLowerCase().includes(filter.toLowerCase())
-			)
-			.sort((a, b) => {
+			);
+		}
+
+		if (sort === Sorting.ASCENDING || sort === Sorting.DESCENDING) {
+			return filteredList.slice().sort((a, b) => {
 				if (sort === Sorting.ASCENDING) {
 					return items[a].name.localeCompare(items[b].name);
 				}
 				return items[b].name.localeCompare(items[a].name);
 			});
+		}
+
+		return filteredList;
 	}
 );
 
